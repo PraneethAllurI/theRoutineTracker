@@ -13,6 +13,7 @@ function EntrySummaryTable() {
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("gutTrackerEntries")) || {};
     setEntries(stored);
+    console.log(stored)
   }, []);
 
   const getWeekNumber = (dateStr) => {
@@ -31,6 +32,7 @@ function EntrySummaryTable() {
     setSelectedEntry(entries[date]);
     setSelectedDate(date);
     setShow(true);
+    console.log("the selected entries are", selectedEntry)
   };
 
   const handleDelete = (date) => {

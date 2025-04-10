@@ -2,8 +2,6 @@ import React from 'react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
-const formatDate = (date) => new Date(date).toISOString().split("T")[0];
-
 function WeeklyPdfExport() {
   const stored = JSON.parse(localStorage.getItem('gutTrackerEntries')) || {};
 
@@ -24,17 +22,17 @@ function WeeklyPdfExport() {
     return weeks;
   };
 
-  const generatePDF = (all = false) => {
+  const generatePDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(16);
     doc.text("Gut Health Tracker – Praneeth Kumar", 10, 10);
 
     const weekGroups = groupEntriesByWeek();
-    const weekNums = all ? Object.keys(weekGroups) : [getWeekNumber(new Date().toISOString())];
+    const weekNums = Object.keys(weekGroups);
 
     let y = 20;
 
-    weekNums.forEach((weekNum, idx) => {
+    weekNums.forEach((weekNum) => {
       const entries = weekGroups[weekNum];
       if (!entries) return;
 
@@ -47,7 +45,6 @@ function WeeklyPdfExport() {
         doc.text(`${i + 1}. Entry Date: ${entry.date}`, 10, y);
         y += 6;
 
-        // DAILY ROUTINE TABLE
         const routineData = Object.entries(entry)
           .filter(([key]) => key !== 'supplements' && key !== 'date')
           .map(([k, v]) => {
@@ -66,7 +63,6 @@ function WeeklyPdfExport() {
 
         y = doc.lastAutoTable.finalY + 6;
 
-        // SUPPLEMENTS TABLE
         const supplements = entry.supplements || {};
         const supplementData = Object.entries(supplements).map(([supp, taken]) => [
           supp,
@@ -105,16 +101,13 @@ function WeeklyPdfExport() {
       }
     });
 
-    doc.save(all ? "gut-tracker-all-weeks.pdf" : "gut-tracker-week.pdf");
+    doc.save("gut-tracker-all-weeks.pdf");
   };
 
   return (
-    <div className="mb-4">
-      <button className="btn btn-primary me-3" onClick={() => generatePDF(false)}>
-        Export Current Week (Grid Style)
-      </button>
-      <button className="btn btn-dark" onClick={() => generatePDF(true)}>
-        Export All Weeks
+    <div className="mb-4 text-center">
+      <button className="btn btn-primary" onClick={generatePDF}>
+        Export All Weeks (PDF)
       </button>
     </div>
   );
