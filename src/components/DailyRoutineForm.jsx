@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { Accordion, Card } from 'react-bootstrap';
+
 
 const DailyRoutineForm = () => {
   const [entryData, setEntryData] = useState({});
@@ -94,58 +96,94 @@ const DailyRoutineForm = () => {
   </h3>
 </div>
 
-    <Form onSubmit={handleSubmit}>
-      <Form.Check type="checkbox" label="7:00 AM - Rub Palms" name="palmsRub" onChange={handleChange} />
-      <Form.Check type="checkbox" label="7:15 AM - Coconut Oil Pulling" name="oilPulling" onChange={handleChange} />
-      <Form.Check type="checkbox" label="7:30 AM - Gargling with Rock Salt" name="gargling" onChange={handleChange} />
-      <Form.Check type="checkbox" label="8:00 AM - Drink Lukewarm Water" name="lukewarmWater" onChange={handleChange} />
-      <Form.Check type="checkbox" label="8:15 AM - Breathing Routine" name="breathing" onChange={handleChange} />
-      <Form.Check type="checkbox" label="8:30 AM - Sunlight + Walk + Basic Exercise" name="sunlight" onChange={handleChange} />
+<Form onSubmit={handleSubmit} className="p-3 bg-white rounded shadow-sm">
 
-      <Form.Group className="mt-3">
-        <Form.Label>9:00 AM - Breakfast</Form.Label>
-        <Form.Control type="text" name="breakfast" onChange={handleChange} />
-      </Form.Group>
+  <Accordion defaultActiveKey="0" flush>
 
-      <Form.Check type="checkbox" label="11:00 AM - Licorice Tea / Pomegranate" name="tea" onChange={handleChange} />
-      <Form.Check type="checkbox" label="Before Lunch - Breathing Exercise" name="preLunchBreathing" onChange={handleChange} />
+    {/* 🌞 Morning Routine */}
+    <Accordion.Item eventKey="0">
+      <Accordion.Header>🌞 Morning Routine</Accordion.Header>
+      <Accordion.Body>
+        <Form.Check label="7:00 AM – Rub Palms" name="palmsRub" type="checkbox" onChange={handleChange} />
+        <Form.Check label="7:15 AM – Coconut Oil Pulling" name="oilPulling" type="checkbox" onChange={handleChange} />
+        <Form.Check label="7:30 AM – Gargling with Rock Salt" name="gargling" type="checkbox" onChange={handleChange} />
+        <Form.Check label="8:00 AM – Drink Lukewarm Water" name="lukewarmWater" type="checkbox" onChange={handleChange} />
+        <Form.Check label="8:15 AM – Breathing Routine" name="breathing" type="checkbox" onChange={handleChange} />
+        <Form.Check label="8:30 AM – Sunlight + Walk + Basic Exercise" name="sunlight" type="checkbox" onChange={handleChange} />
+      </Accordion.Body>
+    </Accordion.Item>
 
-      <Form.Group className="mt-3">
-        <Form.Label>1:00 PM - Lunch</Form.Label>
-        <Form.Control type="text" name="lunch" onChange={handleChange} />
-      </Form.Group>
+    {/* 🍽️ Meals */}
+    <Accordion.Item eventKey="1">
+      <Accordion.Header>🍽️ Meals</Accordion.Header>
+      <Accordion.Body>
+        <Form.Group>
+          <Form.Label>9:00 AM – Breakfast</Form.Label>
+          <Form.Control type="text" name="breakfast" onChange={handleChange} />
+        </Form.Group>
 
-      <Form.Check type="checkbox" label="Post Lunch Walk (15 mins)" name="postLunchWalk" onChange={handleChange} />
-      <Form.Check type="checkbox" label="2:30 PM - Muscle Relaxation Exercises" name="muscleRelax1" onChange={handleChange} />
+        <Form.Check label="11:00 AM – Licorice Tea / Pomegranate" name="tea" type="checkbox" onChange={handleChange} />
+        <Form.Check label="Before Lunch – Breathing Exercise" name="preLunchBreathing" type="checkbox" onChange={handleChange} />
 
-      <Form.Group className="mt-3">
-        <Form.Label>4:00 PM - Snacks</Form.Label>
-        <Form.Control type="text" name="snacks" onChange={handleChange} />
-      </Form.Group>
+        <Form.Group>
+          <Form.Label>1:00 PM – Lunch</Form.Label>
+          <Form.Control type="text" name="lunch" onChange={handleChange} />
+        </Form.Group>
 
-      <Form.Group className="mt-3">
-        <Form.Label>7:30 PM - Dinner</Form.Label>
-        <Form.Control type="text" name="dinner" onChange={handleChange} />
-      </Form.Group>
+        <Form.Check label="Post Lunch Walk (15 mins)" name="postLunchWalk" type="checkbox" onChange={handleChange} />
+        <Form.Check label="2:30 PM – Muscle Relaxation Exercises" name="muscleRelax1" type="checkbox" onChange={handleChange} />
 
-      <Form.Check type="checkbox" label="8:30 PM - Muscle Relaxation Exercises" name="muscleRelax2" onChange={handleChange} />
-      <Form.Check type="checkbox" label="12:00 AM - Prune Juice + Lukewarm Water" name="pruneJuice" onChange={handleChange} />
+        <Form.Group>
+          <Form.Label>4:00 PM – Snacks</Form.Label>
+          <Form.Control type="text" name="snacks" onChange={handleChange} />
+        </Form.Group>
 
-      <hr />
-      <h6>Supplements</h6>
-      <Form.Check type="checkbox" label="Supplement A" name="supplement-A" onChange={handleChange} />
-      <Form.Check type="checkbox" label="Supplement B" name="supplement-B" onChange={handleChange} />
-      <Form.Check type="checkbox" label="Supplement C" name="supplement-C" onChange={handleChange} />
+        <Form.Group>
+          <Form.Label>7:30 PM – Dinner</Form.Label>
+          <Form.Control type="text" name="dinner" onChange={handleChange} />
+        </Form.Group>
 
-      <Form.Group className="mt-3">
-        <Form.Label>Notes / Body Response</Form.Label>
+        <Form.Check label="8:30 PM – Muscle Relaxation Exercises" name="muscleRelax2" type="checkbox" onChange={handleChange} />
+        <Form.Check label="12:00 AM – Prune Juice + Lukewarm Water" name="pruneJuice" type="checkbox" onChange={handleChange} />
+      </Accordion.Body>
+    </Accordion.Item>
+
+    {/* 💊 Supplements */}
+    <Accordion.Item eventKey="2">
+      <Accordion.Header>💊 Supplements</Accordion.Header>
+      <Accordion.Body>
+        {[
+          "Licorice Tea", "Digestive Enzymes", "Megnisium", "Gastro Comfort",
+          "Liver Detox", "Oregano Oil", "L-Glutamine", "Peppermint oil",
+          "Folivate Active", "Vitamin D3"
+        ].map((label, idx) => (
+          <Form.Check
+            key={idx}
+            type="checkbox"
+            label={label}
+            name={label}
+            onChange={handleChange}
+          />
+        ))}
+      </Accordion.Body>
+    </Accordion.Item>
+
+    {/* 📝 Notes */}
+    <Accordion.Item eventKey="3">
+      <Accordion.Header>📝 Notes / Body Response</Accordion.Header>
+      <Accordion.Body>
         <Form.Control as="textarea" rows={3} name="notes" onChange={handleChange} />
-      </Form.Group>
+      </Accordion.Body>
+    </Accordion.Item>
 
-      <Button variant="primary" type="submit" className="mt-3">
-        Submit Entry
-      </Button>
-    </Form>
+  </Accordion>
+
+  {/* ✅ Submit Button */}
+  <div className="text-end mt-3">
+    <Button variant="primary" type="submit">Submit Entry</Button>
+  </div>
+</Form>
+
   </div>
 </div>
     </>
