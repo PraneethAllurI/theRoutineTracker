@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
+import WeeklyPdfExport from "./WeeklyPdfExport";
 
 function EntrySummaryTable() {
   const [entries, setEntries] = useState({});
@@ -137,6 +138,7 @@ function EntrySummaryTable() {
           </Button>
         </Modal.Footer>
       </Modal>
+      <WeeklyPdfExport />
     </div>
   );
 }
