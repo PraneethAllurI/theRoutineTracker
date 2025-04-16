@@ -8,4 +8,4 @@ export default defineConfig({
     outDir: 'dist'
   },
   base: './', // ✅ optional for relative path fixes
-})
+});

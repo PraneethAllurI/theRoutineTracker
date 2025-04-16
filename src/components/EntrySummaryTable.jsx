@@ -13,7 +13,6 @@ function EntrySummaryTable() {
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("gutTrackerEntries")) || {};
     setEntries(stored);
-    console.log(stored)
   }, []);
 
   const getWeekNumber = (dateStr) => {
@@ -32,7 +31,6 @@ function EntrySummaryTable() {
     setSelectedEntry(entries[date]);
     setSelectedDate(date);
     setShow(true);
-    console.log("the selected entries are", selectedEntry)
   };
 
   const handleDelete = (date) => {
@@ -48,6 +46,35 @@ function EntrySummaryTable() {
     localStorage.setItem("editDate", date);
     window.scrollTo({ top: 0, behavior: "smooth" });
     alert(`Editing mode activated for ${date}`);
+  };
+
+  const formatKey = (key) =>
+    key.replace(/([A-Z])/g, " $1").replace(/^./, (str) => str.toUpperCase());
+
+  const formatValue = (key, value) => {
+    if (typeof value === "boolean") {
+      return value ? "✅ Yes" : "❌ No";
+    }
+
+    if (key === "yogaAsanas" && typeof value === "object" && value !== null) {
+      return Object.entries(value)
+        .map(([slot, details]) => {
+          const formattedSlot = slot
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, str => str.toUpperCase());
+
+          const done = details.done ? "✅ Yes" : "❌ No";
+          const notes = details.notes?.trim() ? ` – ${details.notes}` : "";
+          return `${formattedSlot}: ${done}${details.done ? notes : ""}`;
+        })
+        .join("\n");
+    }
+
+    if (typeof value === "object" && value !== null) {
+      return JSON.stringify(value, null, 2);
+    }
+
+    return String(value);
   };
 
   return (
@@ -124,13 +151,11 @@ function EntrySummaryTable() {
           {selectedEntry && (
             <div>
               {Object.entries(selectedEntry).map(([key, value], idx) => (
-                <div key={idx} className="mb-2">
-                  <strong className="text-capitalize">{key.replace(/([A-Z])/g, ' $1')}</strong>:{" "}
-                  {typeof value === "boolean"
-                    ? value ? "✅ Yes" : "❌ No"
-                    : typeof value === "object"
-                    ? JSON.stringify(value, null, 2)
-                    : value}
+                <div key={idx} className="mb-3">
+                  <strong className="text-capitalize">{formatKey(key)}</strong>:
+                  <pre style={{ margin: 0, whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                    {formatValue(key, value)}
+                  </pre>
                 </div>
               ))}
             </div>

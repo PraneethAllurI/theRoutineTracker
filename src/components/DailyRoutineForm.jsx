@@ -44,8 +44,20 @@ const DailyRoutineForm = () => {
         dinner: "",
         muscleRelaxPostDinner: false,
         pruneJuice: false,
-        supplements: { },
+        supplements: {},
         notes: "",
+        yogaAsanas: {
+          earlyMorning: { done: "", notes: "" },
+          postBreakfast: { done: "", notes: "" },
+          postLunch: { done: "", notes: "" },
+          postDinner: { done: "", notes: "" },
+        },
+        poop: {
+          time: "",
+          consistency: "",
+          type: "",
+          notes: "",
+        },
       });
     }
   }, []);
@@ -270,8 +282,171 @@ const DailyRoutineForm = () => {
                   />
                 </Accordion.Body>
               </Accordion.Item>
-            </Accordion>
+              {/* 🧘 Yoga Asanas */}
+              <Accordion.Item eventKey="4">
+                <Accordion.Header>🧘 Yoga Asanas</Accordion.Header>
+                <Accordion.Body>
+                  {[
+                    { label: "Early Morning", key: "earlyMorning" },
+                    { label: "Post Breakfast", key: "postBreakfast" },
+                    { label: "Post Lunch", key: "postLunch" },
+                    { label: "Post Dinner", key: "postDinner" },
+                  ].map(({ label, key }) => (
+                    <div key={key} className="mb-4">
+                      <Form.Label>
+                        <strong>{label}</strong>
+                      </Form.Label>
+                      <div className="mb-2">
+                        <Form.Check
+                          inline
+                          label="Yes"
+                          name={`yoga-${key}`}
+                          type="radio"
+                          value="yes"
+                          checked={entryData?.yogaAsanas?.[key]?.done === "yes"}
+                          onChange={(e) =>
+                            setEntryData((prev) => ({
+                              ...prev,
+                              yogaAsanas: {
+                                ...prev.yogaAsanas,
+                                [key]: {
+                                  ...(prev.yogaAsanas?.[key] || {}),
+                                  done: e.target.value,
+                                },
+                              },
+                            }))
+                          }
+                        />
+                        <Form.Check
+                          inline
+                          label="No"
+                          name={`yoga-${key}`}
+                          type="radio"
+                          value="no"
+                          checked={entryData?.yogaAsanas?.[key]?.done === "no"}
+                          onChange={(e) =>
+                            setEntryData((prev) => ({
+                              ...prev,
+                              yogaAsanas: {
+                                ...prev.yogaAsanas,
+                                [key]: {
+                                  ...(prev.yogaAsanas?.[key] || {}),
+                                  done: e.target.value,
+                                },
+                              },
+                            }))
+                          }
+                        />
+                      </div>
+                      {entryData?.yogaAsanas?.[key]?.done === "yes" && (
+                        <Form.Control
+                          placeholder={`What yoga asanas did you do in ${label.toLowerCase()}?`}
+                          value={entryData?.yogaAsanas?.[key]?.notes || ""}
+                          onChange={(e) =>
+                            setEntryData((prev) => ({
+                              ...prev,
+                              yogaAsanas: {
+                                ...prev.yogaAsanas,
+                                [key]: {
+                                  ...(prev.yogaAsanas?.[key] || {}),
+                                  notes: e.target.value,
+                                },
+                              },
+                            }))
+                          }
+                        />
+                      )}
+                    </div>
+                  ))}
+                </Accordion.Body>
+              </Accordion.Item>
+              {/* 💩 Bowel Movement */}
+              <Accordion.Item eventKey="5">
+                <Accordion.Header>💩 Bowel Movement</Accordion.Header>
+                <Accordion.Body>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Time</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="e.g., 7:00 AM"
+                      name="poopTime"
+                      value={entryData?.poop?.time || ""}
+                      onChange={(e) =>
+                        setEntryData((prev) => ({
+                          ...prev,
+                          poop: {
+                            ...prev.poop,
+                            time: e.target.value,
+                          },
+                        }))
+                      }
+                    />
+                  </Form.Group>
 
+                  <Form.Group className="mb-3">
+                    <Form.Label>Consistency</Form.Label>
+                    <Form.Select
+                      name="poopConsistency"
+                      value={entryData?.poop?.consistency || ""}
+                      onChange={(e) =>
+                        setEntryData((prev) => ({
+                          ...prev,
+                          poop: {
+                            ...prev.poop,
+                            consistency: e.target.value,
+                          },
+                        }))
+                      }
+                    >
+                      <option value="">-- Select Consistency --</option>
+                      <option value="Hard">Hard</option>
+                      <option value="Smooth">Smooth</option>
+                      <option value="Loose">Loose</option>
+                      <option value="Watery">Watery</option>
+                    </Form.Select>
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label>Type</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="e.g., Type 4"
+                      name="poopType"
+                      value={entryData?.poop?.type || ""}
+                      onChange={(e) =>
+                        setEntryData((prev) => ({
+                          ...prev,
+                          poop: {
+                            ...prev.poop,
+                            type: e.target.value,
+                          },
+                        }))
+                      }
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label>Notes</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={2}
+                      placeholder="Any additional observations?"
+                      name="poopNotes"
+                      value={entryData?.poop?.notes || ""}
+                      onChange={(e) =>
+                        setEntryData((prev) => ({
+                          ...prev,
+                          poop: {
+                            ...prev.poop,
+                            notes: e.target.value,
+                          },
+                        }))
+                      }
+                    />
+                  </Form.Group>
+                </Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
             {/* ✅ Submit Button */}
             <div className="text-end mt-3">
               <Button variant="primary" type="submit">
